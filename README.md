@@ -15,13 +15,12 @@ This project contains a comprehensive analysis of Toronto Transit Commission (TT
 ## Directory Structure
 
 ```
-├── Raw_dataset/          # Original unprocessed data
-├── Cleaned_dataset/      # Cleaned and processed data
-├── Calculation_and_Pivot_Table/  # Statistical calculations
+├── Raw_dataset/          # Original unprocessed data (frozen/locked)
+├── Cleaned_dataset/      # Cleaned and processed data via Google Sheets
+├── Calculation_and_Pivot_Table/  # Statistical calculations and pivot tables
 ├── Dashboard/            # Dashboard-ready data
 ├── Documentation/        # Project documentation
-├── Presentation/         # Presentation materials
-└── analyze_data.py       # Data analysis script
+└── Presentation/         # Presentation materials
 ```
 
 ## Column Specifications and Statistical Analysis
@@ -198,30 +197,53 @@ This project contains a comprehensive analysis of Toronto Transit Commission (TT
 
 ## Data Processing Pipeline
 
-1. **Raw Dataset** (`Raw_dataset/Data.csv`) - Original unprocessed data
-2. **Cleaned Dataset** (`Cleaned_dataset/Cleaned.csv`) - Processed and validated data
-3. **Calculations** (`Calculation_and_Pivot_Table/`) - Statistical analysis
-4. **Dashboard** (`Dashboard/`) - Visualization-ready data
+The data cleaning and transformation process was implemented entirely in **Google Sheets** using array formulas and structured workflows:
 
-## Requirements
+1. **Tab 1 (Raw Dataset)** - Frozen immutable source data (`Raw_dataset/Data.csv`)
+2. **Tab 1.1 (Cleaned Data)** - Cleaning engine with array formulas (`Cleaned_dataset/Cleaned.csv`)
+3. **Tab 2 (Data Dictionary)** - Metadata and Line Mapping Table
+4. **Tab 3 (Analysis)** - Pivot tables and aggregated statistics
+5. **Dashboard** - Visualization-ready data exports
 
-- Python 3.x
-- pandas library
+### Cleaning Methodology
 
-## Usage
+All data transformations were performed using Google Sheets native functions:
+- **VLOOKUP** for line name standardization
+- **UPPER(TRIM())** for station name normalization
+- **IF statements** for handling missing values
+- **Array formulas** for batch processing 25,714 rows
+- **Custom formulas** for derived features (Delay_Category, Time_Period)
 
-Run the analysis script:
-```bash
-python analyze_data.py
-```
+## Technology Stack
+
+- **Primary Tool**: Google Sheets (Array Formulas, VLOOKUP, Pivot Tables)
+- **Data Format**: CSV (UTF-8)
+- **Architecture**: 4-Tab non-destructive workflow
+
+## Cleaned Dataset Structure
+
+The cleaned dataset contains **13 columns** (8 original + 5 derived):
+
+**Original Columns (Preserved)**:
+- _id, Date, Time, Day, Station, Code, Min Delay, Min Gap, Vehicle
+
+**Cleaned/Derived Columns**:
+- **Bound_Clean**: Standardized direction (None → "Unknown")
+- **Line_Clean**: Standardized to 4 categories (YU, BD, SHP, SRT)
+- **Delay_Category**: No Delay, Minor (1-5 min), Moderate (6-15 min), Major (>15 min)
+- **Time_Period**: Night, AM Peak, Midday, PM Peak, Evening
 
 ## Data Integrity Notes
 
-- Total data points: 282,876 (11 columns × 25,716 rows)
-- Completeness: 99.99% (excluding intentional "None" values)
+- Total data points: 334,382 (13 columns × 25,714 rows + header)
+- Completeness: 100% after cleaning (missing values handled)
 - Time span: 365 days continuous coverage
 - Data collection: 2025 calendar year
 
 ## Next Steps
 
-Refer to `Cleaned_dataset/README.md` for detailed information on data cleaning procedures and transformations applied to the raw dataset.
+Refer to `Cleaned_dataset/README.md` for detailed information on:
+- Data cleaning procedures and transformations
+- Google Sheets formulas used
+- Before/after quality metrics
+- Feature engineering logic
